@@ -23,7 +23,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import EventEmitter from "events";
 import logger from "./utils/logger.js";
-import open from "open";
+import { openUrl } from "./utils/open-url.js";
 import {
   ConnectionError,
   ToolError,
@@ -616,7 +616,13 @@ export class MCPConnection extends EventEmitter {
     // log it in cases where the user in a browserless environment
     logger.info(`Opening authorization URL for server '${this.name}': ${this.authorizationUrl.toString()}`);
     // Open the authorization URL in the default browser 
-    await open(this.authorizationUrl.toString())
+    try {
+      await openUrl(this.authorizationUrl.toString());
+    } catch (error) {
+      logger.warn(`Failed to automatically open authorization URL for server '${this.name}'. Please open it manually.`, {
+        error: error?.message,
+      });
+    }
     //Once the user authorizes, handleAuthCallback is called.
     return {
       authorizationUrl: this.authorizationUrl,
