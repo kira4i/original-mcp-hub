@@ -17,7 +17,6 @@ import { join } from "path";
 
 // Read version from package.json while in dev mode to get the latest version
 // We can't do this production, due to issues when installed as global package on "bun"
-// Ignore the esbuild build warning id: 'assign-to-define',
 if (process.env.NODE_ENV != "production") {
   // Get the directory path of the current module
   const __dirname = fileURLToPath(new URL('.', import.meta.url));
